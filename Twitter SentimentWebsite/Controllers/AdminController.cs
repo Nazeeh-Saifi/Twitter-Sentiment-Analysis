@@ -8,8 +8,6 @@ using System.Collections;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Http;
 using AdminModels;
-using TwitterSentimentService;
-using System.Runtime.Serialization.Formatters.Soap;
 
 namespace Twitter_SentimentWebsite.Controllers
 {
@@ -35,7 +33,7 @@ namespace Twitter_SentimentWebsite.Controllers
             ViewBag.check = false;
             return View();
         }
-        public ActionResult RetrieveTwits()
+        public ActionResult RetrieveTweets()
         {
             ViewBag.check = false;
             return View();
@@ -66,9 +64,17 @@ namespace Twitter_SentimentWebsite.Controllers
             HttpChannel channel = new HttpChannel();
             ChannelServices.RegisterChannel(channel);
             client = (ITwitterSentimentService.ITwitterSentimentService)Activator.GetObject
-              (typeof(ITwitterSentimentService.ITwitterSentimentService), "http://localhost:8080/AddCase");
+              (typeof(ITwitterSentimentService.ITwitterSentimentService), "http://localhost:8080/AddUser");
 
-            client.AddUser(add.first_name, add.last_name, add.dob);
+            string user_check = client.AddUser(add.first_name, add.last_name, add.dob);
+            if(user_check == "exsist")
+            {
+                ViewBag.user_check = 1;
+            }
+            else
+            {
+                ViewBag.user_check = 0;
+            }
             ChannelServices.UnregisterChannel(channel);
 
             return View("AddUser");
@@ -113,27 +119,27 @@ namespace Twitter_SentimentWebsite.Controllers
         }
         [HttpPost]
         [Obsolete]
-        public ActionResult Verify_retrievetwits(RetrieveTwits_Data ret)
+        public ActionResult Verify_retrievetweets(RetrieveTweets_Data ret)
         {
             ViewBag.check = true;
 
             HttpChannel channel = new HttpChannel();
             ChannelServices.RegisterChannel(channel);
             client = (ITwitterSentimentService.ITwitterSentimentService)Activator.GetObject
-              (typeof(ITwitterSentimentService.ITwitterSentimentService), "http://localhost:8080/RetrieveTwits");
+              (typeof(ITwitterSentimentService.ITwitterSentimentService), "http://localhost:8080/RetrieveTweets");
 
-            ArrayList twit_retrieve = client.RetrieveTwits(ret.user_id);
-            if (twit_retrieve != null)
+            ArrayList tweet_retrieve = client.RetrieveTweets(ret.user_id);
+            if (tweet_retrieve != null)
             {
-                ViewBag.twit = twit_retrieve;  
+                ViewBag.tweet = tweet_retrieve;  
             }
 
             else
             {
-                ViewBag.twit = null;
+                ViewBag.tweet = null;
             }
             ChannelServices.UnregisterChannel(channel);
-            return View("RetrieveTwits");
+            return View("RetrieveTweets");
         }
 
         [Obsolete]
@@ -216,23 +222,23 @@ namespace Twitter_SentimentWebsite.Controllers
         }
 
       [Obsolete]
-        public ActionResult AddTwitSentiment()
+        public ActionResult AddTweetSentiment()
         { 
 
         HttpChannel channel = new HttpChannel();
         ChannelServices.RegisterChannel(channel);
             client = (ITwitterSentimentService.ITwitterSentimentService) Activator.GetObject
-              (typeof(ITwitterSentimentService.ITwitterSentimentService), "http://localhost:8080/RetreiveAllTwitsforSentiment");
+              (typeof(ITwitterSentimentService.ITwitterSentimentService), "http://localhost:8080/RetreiveAllTweetsforSentiment");
 
-        ArrayList twits_retrieve = client.RetreiveAllTwitsforSentiment();
-            if (twits_retrieve != null)
+        ArrayList tweets_retrieve = client.RetreiveAllTweetsforSentiment();
+            if (tweets_retrieve != null)
             {
-                ViewBag.twit = twits_retrieve;
+                ViewBag.tweet = tweets_retrieve;
             }
 
             else
             {
-                ViewBag.twit = null;
+                ViewBag.tweet = null;
             }
             ChannelServices.UnregisterChannel(channel);
             return View();
@@ -240,18 +246,18 @@ namespace Twitter_SentimentWebsite.Controllers
         }
         [HttpPost]
         [Obsolete]
-        public ActionResult AddSentimentforTwit(AddSentimentforTwit add)
+        public ActionResult AddSentimentforTweet(AddSentimentforTweet add)
         {
 
             HttpChannel channel = new HttpChannel();
             ChannelServices.RegisterChannel(channel);
             client = (ITwitterSentimentService.ITwitterSentimentService)Activator.GetObject
-              (typeof(ITwitterSentimentService.ITwitterSentimentService), "http://localhost:8080/AddSentimentforTwit");
+              (typeof(ITwitterSentimentService.ITwitterSentimentService), "http://localhost:8080/AddSentimentforTweet");
 
-            client.AddSentimentforTwit(add.twit_id,add.sentiment,add.case_id);
+            client.AddSentimentforTweet(add.tweet_id,add.sentiment,add.case_id);
             ChannelServices.UnregisterChannel(channel);
             
-            return View("AddTwitSentiment",AddTwitSentiment());
+            return View("AddTweetSentiment",AddTweetSentiment());
         }
         [Obsolete]
         public ActionResult RetrieveOverallSentiments()

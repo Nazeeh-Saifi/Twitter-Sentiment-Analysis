@@ -28,17 +28,29 @@ namespace TwitterSentimentServices
 
         //____Admin Services_____
 
-        public void AddUser(string first_name, string last_name, string DOB)
+        public string AddUser(string first_name, string last_name, string DOB)
         {
             sqlconnection();
 
-            com.CommandText = "insert into users(first_name,last_name,dob) Values('" + first_name + "','"
-            + last_name + "','"
-            + DOB + "');";
-
+            com.CommandText = "select * from users where first_name='" + first_name + "' and last_name='" + last_name + "';";
             dr = com.ExecuteReader();
-            con.Close();
+            if (dr.Read())
+            {
+                con.Close();
+                return "exsist";
+            }
+            else
+            {
+                con.Close();
+                sqlconnection();
+                com.CommandText = "insert into users(first_name,last_name,dob) Values('" + first_name + "','"
+                + last_name + "','"
+                + DOB + "');";
 
+                dr = com.ExecuteReader();
+                con.Close();
+                return "not exsist";
+            }
         }
 
         public void RemoveUser(int id, string first_name, string last_name)
@@ -88,28 +100,28 @@ namespace TwitterSentimentServices
 
         }
 
-        public ArrayList RetrieveTwits(int user_id)
+        public ArrayList RetrieveTweets(int user_id)
         {
-            Twits[] allRecords = { };
+            Tweets[] allRecords = { };
             sqlconnection();
             com.CommandText = "select id,text,sentiment,date,case_id from twits where user_id =" + user_id + ";";
 
             dr = com.ExecuteReader();
-            List<Twits> twits = new List<Twits>();
+            List<Tweets> tweets = new List<Tweets>();
             var li = new ArrayList();
 
             while (dr.Read())
             {
-                twits.Add(new Twits
+                tweets.Add(new Tweets
                 {
-                    twit_id = dr.GetInt32(0),
+                    tweet_id = dr.GetInt32(0),
                     text = dr.GetString(1),
                     sentiment = dr.GetInt32(2),
                     date = dr.GetString(3),
                     case_id = dr.GetInt32(4)
                 });
-     
-                allRecords = twits.ToArray();
+
+                allRecords = tweets.ToArray();
 
             }
             li.AddRange(allRecords);
@@ -197,27 +209,27 @@ namespace TwitterSentimentServices
             return ui;
 
         }
-        public ArrayList RetreiveAllTwitsforSentiment()
+        public ArrayList RetreiveAllTweetsforSentiment()
         {
-            Twits[] allRecords = { };
+            Tweets[] allRecords = { };
             sqlconnection();
             com.CommandText = "select id,text,date,case_id from twits where sentiment = 0;";
 
             dr = com.ExecuteReader();
-            List<Twits> twits = new List<Twits>();
+            List<Tweets> tweets = new List<Tweets>();
             var li = new ArrayList();
 
             while (dr.Read())
             {
-                twits.Add(new Twits
+                tweets.Add(new Tweets
                 {
-                    twit_id = dr.GetInt32(0),
+                    tweet_id = dr.GetInt32(0),
                     text = dr.GetString(1),
                     date = dr.GetString(2),
                     case_id = dr.GetInt32(3)
                 });
 
-                allRecords = twits.ToArray();
+                allRecords = tweets.ToArray();
 
             }
             li.AddRange(allRecords);
@@ -226,11 +238,11 @@ namespace TwitterSentimentServices
             return li;
         }
 
-        public void AddSentimentforTwit(int twit_id, int sentiment,int case_id)
+        public void AddSentimentforTweet(int tweet_id, int sentiment, int case_id)
         {
             sqlconnection();
 
-            com.CommandText = "Update twits SET sentiment = '" + sentiment + "' where id = " + twit_id + ";";
+            com.CommandText = "Update twits SET sentiment = '" + sentiment + "' where id = " + tweet_id + ";";
 
             dr = com.ExecuteReader();
             con.Close();
@@ -240,17 +252,17 @@ namespace TwitterSentimentServices
             int Count = 0;
             int allsen = 0;
             sqlconnection();
-            com.CommandText = "select sentiment from twits where case_id = " + case_id +";";
+            com.CommandText = "select sentiment from twits where case_id = " + case_id + ";";
 
             dr = com.ExecuteReader();
-            while (dr.Read()){
+            while (dr.Read()) {
                 Count++;
                 allsen += dr.GetInt32(0);
             }
-            
+
             int overall_sentiment = allsen / Count;
             con.Close();
-            
+
             sqlconnection();
             com.CommandText = "Update cases SET overall_sentiment = '" + overall_sentiment + "' where id = " + case_id + ";";
 
@@ -281,40 +293,72 @@ namespace TwitterSentimentServices
             return ci;
         }
 
-    //_____User Services_______
+        //_____User Services_______
 
-    public string AddTwit(string twit_text,string username)
+        public string CheckUser(string first_name, string last_name)
         {
             sqlconnection();
-            string date = DateTime.Now.ToString();
-            com.CommandText = "insert into twits(text,user_id,date) Values('" + twit_text + "'," +
-                "(SELECT id from users where username = "+ username + "),'"+ date +"');";
-            //return com.CommandText;
-
+            com.CommandText = "select * from users where first_name ='" + first_name + "' and last_name= '" + last_name + "';";
             dr = com.ExecuteReader();
-            if (dr.Read() == true)
+            if (dr.Read())
             {
                 con.Close();
-                return "Error!!! your name not found";
+                return "Registered";
             }
             else
             {
                 con.Close();
-                return "your twit added Successfully.";
+                return "UnRegistered";
             }
         }
 
-        public string ParticipateCase(int case_id,string twit_text,string username)
+        public void AddTweet(string tweet_text, string first_name, string last_name)
         {
             sqlconnection();
-            AddTwit(twit_text,username);
-
-            com.CommandText = "insert into twits (case_id) Values (" + case_id + ");";
+            string date = DateTime.Now.ToString();
+            com.CommandText = "insert into twits(text,user_id,date) Values('" + tweet_text + "'," +
+               "(SELECT id from users where first_name = '" + first_name + "' and last_name = '" + last_name + "'),'" + date + "');";
             dr = com.ExecuteReader();
-
-            return "user partcipate in a case number :" + case_id;
+            con.Close();
         }
 
+        public ArrayList RetrieveCases()
+        {
+            Cases[] allRecords = { };
+            sqlconnection();
+            com.CommandText = "select id,text,dol from cases";
+            dr = com.ExecuteReader();
+            List<Cases> cases = new List<Cases>();
+            var ci = new ArrayList();
+
+            while (dr.Read())
+            {
+                cases.Add(new Cases
+                {
+                    case_id = dr.GetInt32(0),
+                    text = dr.GetString(1),
+                    dol = dr.GetString(2)
+                }); ;
+
+                allRecords = cases.ToArray();
+            }
+
+            ci.AddRange(allRecords);
+            con.Close();
+            return ci;
+        }
+
+        public void ParticipateCase(string tweet_text,string first_name,string last_name,int case_id)
+        {
+            sqlconnection();
+            string date = DateTime.Now.ToString();
+            com.CommandText = "insert into twits(text,user_id,date,case_id) Values('" + tweet_text + "'," +
+               "(SELECT id from users where first_name = '" + first_name + "' and last_name = '" + last_name + "'),'" + date + "',"+ case_id +");";
+            dr = com.ExecuteReader();
+            con.Close();
+        }
+
+
     }
- 
+
 }

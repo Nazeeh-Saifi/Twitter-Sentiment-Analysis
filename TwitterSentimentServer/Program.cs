@@ -24,7 +24,7 @@ namespace TwitterSentimentServer
                 (typeof(TwitterSentimentServices.TwitterSentimentServices), "RetrieveUser", WellKnownObjectMode.Singleton);
 
             RemotingConfiguration.RegisterWellKnownServiceType
-                (typeof(TwitterSentimentServices.TwitterSentimentServices), "RetrieveTwits", WellKnownObjectMode.Singleton);
+                (typeof(TwitterSentimentServices.TwitterSentimentServices), "RetrieveTweets", WellKnownObjectMode.Singleton);
 
             RemotingConfiguration.RegisterWellKnownServiceType
                 (typeof(TwitterSentimentServices.TwitterSentimentServices), "AddCase", WellKnownObjectMode.Singleton);
@@ -39,16 +39,22 @@ namespace TwitterSentimentServer
                 (typeof(TwitterSentimentServices.TwitterSentimentServices), "RetrieveUsers_case", WellKnownObjectMode.Singleton);
 
             RemotingConfiguration.RegisterWellKnownServiceType
-               (typeof(TwitterSentimentServices.TwitterSentimentServices), "RetreiveAllTwitsforSentiment", WellKnownObjectMode.Singleton); 
+               (typeof(TwitterSentimentServices.TwitterSentimentServices), "RetreiveAllTweetsforSentiment", WellKnownObjectMode.Singleton); 
    
              RemotingConfiguration.RegisterWellKnownServiceType
-               (typeof(TwitterSentimentServices.TwitterSentimentServices), "AddSentimentforTwit", WellKnownObjectMode.Singleton);
+               (typeof(TwitterSentimentServices.TwitterSentimentServices), "AddSentimentforTweet", WellKnownObjectMode.Singleton);
             RemotingConfiguration.RegisterWellKnownServiceType
               (typeof(TwitterSentimentServices.TwitterSentimentServices), "RetrieveOverallSentiments", WellKnownObjectMode.Singleton);
             //_______User Remoting system
             RemotingConfiguration.RegisterWellKnownServiceType
-                (typeof(TwitterSentimentServices.TwitterSentimentServices), "AddTwit", WellKnownObjectMode.Singleton);
-           
+                (typeof(TwitterSentimentServices.TwitterSentimentServices), "CheckUser", WellKnownObjectMode.Singleton);
+            
+            RemotingConfiguration.RegisterWellKnownServiceType
+                (typeof(TwitterSentimentServices.TwitterSentimentServices), "AddTweet", WellKnownObjectMode.Singleton);
+            
+            RemotingConfiguration.RegisterWellKnownServiceType
+               (typeof(TwitterSentimentServices.TwitterSentimentServices), "RetrieveCases", WellKnownObjectMode.Singleton);
+
             RemotingConfiguration.RegisterWellKnownServiceType
                 (typeof(TwitterSentimentServices.TwitterSentimentServices), "ParticipateCase", WellKnownObjectMode.Singleton);
 

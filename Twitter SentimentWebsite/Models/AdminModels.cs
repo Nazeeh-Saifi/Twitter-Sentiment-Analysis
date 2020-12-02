@@ -24,10 +24,10 @@ namespace AdminModels
     {
         public int id { get; set; }
     }
-    public class RetrieveTwits_Data
+    public class RetrieveTweets_Data
     {
         public int user_id { get; set; }
-        public int twit_id { get; set; }
+        public int tweet_id { get; set; }
         public string text { get; set; }
         public int overall_sentiment { get; set; }
         public string date { get; set; }
@@ -59,9 +59,9 @@ namespace AdminModels
         public string dol { get; set; }
 
     }
-    public class AddSentimentforTwit
+    public class AddSentimentforTweet
     {
-        public int twit_id { get; set; }
+        public int tweet_id { get; set; }
         public int sentiment { get; set; }
         public int case_id { get; set; }
     }

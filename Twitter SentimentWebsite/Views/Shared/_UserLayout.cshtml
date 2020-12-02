@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TwitterSentimentWebApp</title>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/Content/css/site.css" />
+    <link rel="stylesheet" href="~/Content/css/userlayout.css" />
+    <link rel="stylesheet" href="~/Content/css/inputstyle.css" />
+</head>
+<body>
+
+    <div style="float : right; padding:10px 20px 20px">
+        <br /><span style="color:greenyellow">● </span>
+        <span style="font-size:15px">@ViewBag.username.first_name @ViewBag.username.last_name</span>
+
+
+    </div>
+    <div class="container">
+
+        <main role="main" class="pb-3">
+            <div class="sidebar-container">
+                <div class="sidebar-logo">
+                        <img src="~/Content/images/Twitter-Logo-2010–2012.png" style="width:70%"/>
+                    </a>
+                </div>
+                <ul class="sidebar-navigation">
+                    <li class="header">Home</li>
+                    <li>
+                        <a href="#addtweets">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>Add Tweets
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#cases">
+                            <i class="fas fa-id-card" aria-hidden="true"></i> Cases
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#about">
+                            <i class="fas fa-globe" aria-hidden="true"></i> About
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#contact-us">
+                            <i class="fas fa-phone" aria-hidden="true"></i> Contact Us
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Login", "Users")">
+                            <i class="fas fa-door-open" aria-hidden="true"></i> Log-out
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="content-container">
+
+                <div class="container-fluid">
+
+                    <!-- Main component for a primary marketing message or call to action -->
+                    <div class="jumbotron">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+            </main>
+            </div>
+
+            <footer class="border-top footer text-muted">
+                <div class="container">
+                    &copy; 2020 - TwitterSentiment - <a>Privacy</a>
+                </div>
+            </footer>
+</body>
+</html>
+

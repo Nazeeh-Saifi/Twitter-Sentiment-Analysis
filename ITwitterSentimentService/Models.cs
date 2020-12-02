@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace TwitterSentimentService
 {
     [Serializable]
-    public class Twits
+    public class Tweets
     {
-        public int twit_id { get; set; }
+        public int tweet_id { get; set; }
         public string text { get; set; }
         public int sentiment { get; set; }
         public string date { get; set; }

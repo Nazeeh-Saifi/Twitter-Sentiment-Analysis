@@ -44,8 +44,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="@Url.Action("RetrieveTwits", "Admin")">
-                            <i class="fa fa-twitter" aria-hidden="true"></i>Retrieve Twits of a user
+                        <a href="@Url.Action("RetrieveTweets", "Admin")">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>Retrieve Tweets of a user
                         </a>
                     </li>
                     <li class="header">Cases</li>
@@ -71,8 +71,8 @@
                     </li>
                     <li class="header">Sentiments</li>
                     <li>
-                        <a href="@Url.Action("AddTwitSentiment", "Admin")">
-                            <i class="fa fa-cog" aria-hidden="true"></i>Add Twit Sentiment
+                        <a href="@Url.Action("AddTweetSentiment", "Admin")">
+                            <i class="fa fa-cog" aria-hidden="true"></i>Add Tweet Sentiment
                         </a>
                     </li>
                     <li>
@@ -94,6 +94,11 @@
                     <li>
                         <a href="#">
                             <i class="fa fa-line-chart" aria-hidden="true"></i>Distribution of users upon their sentiments
+                        </a>
+                    </li>
+                    <li style="text-align:center;background-color:red">
+                        <a href="@Url.Action("Login", "Users")">
+                            <i aria-hidden="true"></i>Log-out
                         </a>
                     </li>
                 </ul>

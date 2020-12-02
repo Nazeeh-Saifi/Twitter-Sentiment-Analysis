@@ -1,0 +1,223 @@
+﻿@using TwitterSentimentService;
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Home";
+    if (ViewBag.check == 1)
+    {
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your Logged in Successfully',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
+    }
+}
+<style>
+    table, td, th {
+        border: 1px solid black;
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/Content/css/site.css" />
+
+</head>
+<body>
+    <div class="w3-panel w3-pale-blue w3-border">
+        <p style="color:indianred;font-size:40px"><b>Welcome</b></p>
+        <br />
+        <p>
+            Here you can find the home page that allows you to <a herf="#addtweets">Add Tweets</a>,
+            <a herf="#cases">See Cases</a> that published by admin and participate with them.
+            <br /><br />
+            If you want to learn more about the project click on <a herf="#about">About</a> and if you have any quaustion you can
+            <a herf="#contact">Contact us</a> we will be happy to answer &#128512;
+        </p>
+        <br />
+    </div>
+    <hr style=" display: inline-block; width: 100%; margin: 5px 10px; border-top: 1px solid gray;">
+    <h2 id="addtweets"><b>Add Tweets:</b></h2>
+    <p>you can add any tweet you want with max character of 50:</p>
+    <br />
+    <form action="Verify_addtweet" id="add" method="post" onsubmit="return confirmsubmit()">
+
+        <div class="input-group">
+            <textarea maxlength="49" name="tweet_text" placeholder="Enter your Tweet text here" required=""></textarea>
+        </div>
+        <input type="hidden" name="first_name" value="@ViewBag.username.first_name" />
+        <input type="hidden" name="last_name" value="@ViewBag.username.last_name" />
+
+        <button class="btn btn-danger-case btn-block" type="submit">Add New Tweet</button>
+
+    </form>
+    <br />
+    <hr style=" display: inline-block; width: 100%; margin: 5px 10px; border-top: 1px solid gray;">
+    <h2 id="cases"><b>Cases:</b></h2>
+    <p>Here you can see all the cases published by admin. if you want to participate in any of them you can add a tweet and post your opinion:</p>
+    <section>
+        @{ if (ViewBag.cases == null)
+            {
+                <p style="text-align:center;color:darkred;font-size:20px;">There are no Cases published by admin!!!<br />Come back next time.</p>
+            }
+            else
+            {
+                <br />
+                <table>
+                    <tr style="background-color: gainsboro;">
+
+                        <th>Case text</th>
+                        <th>Date of Launch</th>
+                        <th>Replay</th>
+                        @{int count = 0;
+                            foreach (Cases cases in ViewBag.cases)
+                            {
+                                count++;
+                            <tr>
+                                <td>@cases.text</td>
+                                <td>@cases.dol</td>
+                                <td><button style="border-radius:30px;background-color:deepskyblue;color:white" onclick="toggle_visibility(@count);"><b>+</b></button></td>
+                            </tr>
+                            <tr id="@count" style="display:none;">
+                                <td colspan="3">
+
+                                    <form action="Verify_ParticipateInCase" id="addreplay" method="post" onsubmit="return confirmReplay()">
+
+
+
+                                        <textarea maxlength="49" name="tweet_text" placeholder="Enter your Replay or Re-Tweet text here" required=""></textarea>
+
+
+                                        <input type="hidden" name="first_name" value="@ViewBag.username.first_name" />
+
+                                        <input type="hidden" name="last_name" value="@ViewBag.username.last_name" />
+
+                                        <input type="hidden" name="case_id" value="@cases.case_id" />
+
+
+                                        <button style="border-radius:10px;background-color:black;color:white;position:relative" class="btn" type="submit">Replay</button>
+
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        }
+                    </table>
+                }
+        }
+
+    </section>
+    <br />
+    <hr style=" display: inline-block; width: 100%; margin: 5px 10px; border-top: 1px solid gray;">
+    <h2 id="about"><b>About:</b></h2>
+    <div class="w3-panel w3-pale-red w3-border">
+        <br />
+        <p>
+            Twitter Sentiment Analysis is an "Distributed Applications Programming" project aims to Design and Execute a distributed system using two methods:
+        </p>
+        <p>
+            <br />
+            1- Remoting.
+            <br />
+            2- WCF (Windows Communication Foundation).
+        </p>
+        <br />
+        <b>Using Remoting Method</b>
+        <p>Here we can find the user panel or page who has the ability to:</p>
+        <ul>
+            <li>Add new tweet</li>
+            <li>Participate in the case posted by admin</li>
+        </ul>
+        <p>This project Excuted and Designed by :</p>
+        <br />
+        * Mohammad Sulaiman Tanbari -> ID: mohammad_sulaiman_116892
+        <br />
+        * Nazeeh al-Safi -> ID: nazeeh_132544
+        <br /><br />
+    </div>
+    <br />
+    <hr style=" display: inline-block; width: 100%; margin: 5px 10px; border-top: 1px solid gray;">
+    <h2 id="contact-us"><b>Contact Us:</b></h2>
+    <b>Get in touch with us via E-mail:</b>
+    <ul>
+        <li>Mohammad Sulaiman Tanbari : <a>suliman.tanbari@hotmail.com</a></li>
+        <li>Nazeeh Al-Saifi : <a>nazeeh.saifi@gmail.com</a></li>
+    </ul>
+    <p>you can find the project free to use on Github: 
+        <a href="https://github.com/mhdsulaiman/Twitter-Sentiment-Analysis">Click Here</a>
+    </p>
+    <br />
+    
+</body>
+</html>
+
+<script type="text/javascript">
+    <!--
+    function toggle_visibility(count) {
+        var e = document.getElementById(count);
+        if (e.style.display == 'table-row')
+            e.style.display = 'none';
+        else
+            e.style.display = 'table-row';
+    }
+
+    function confirmsubmit() {
+
+        Swal.fire({
+            title: 'Are you sure you want to add this tweet?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Added',
+                    'your new tweet added successfully',
+                    'success'
+                );
+                setTimeout(function () { document.getElementById("add").submit() }, 3000);
+            }
+        });
+        return false;
+    }
+
+    function confirmReplay() {
+
+        Swal.fire({
+            title: 'Are you sure you want to replay to this case?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Added',
+                    'your Replay added successfully',
+                    'success'
+                );
+                setTimeout(function () { document.getElementById("addreplay").submit() }, 3000);
+            }
+        });
+        return false;
+    }
+</script>
+
+

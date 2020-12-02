@@ -1,6 +1,6 @@
 ﻿@using TwitterSentimentService;
 @{
-    ViewBag.Title = "RetrieveTwits";
+    ViewBag.Title = "Retrieve Tweets";
 
 }
 
@@ -30,12 +30,12 @@
         <i class="fa fa-lightbulb-o" style="font-size:28px;color:yellow"></i>
         Note: Make Sure to Submit the Right Information.
     </p>
-    <form name="retrieve" action="Verify_retrievetwits" method="post">
+    <form name="retrieve" action="Verify_retrievetweets" method="post">
         <div class="input-group">
 
             <input type="number" min="0" name="user_id" placeholder="User ID" required="">
         </div>
-        <button class="btn btn-danger btn-block" name="submit" type="submit">Retrieve Twits by User ID</button>
+        <button class="btn btn-danger btn-block" name="submit" type="submit">Retrieve Tweets by User ID</button>
 
     </form>
     @{
@@ -45,11 +45,11 @@
         }
         else
         {
-            if (ViewBag.twit.Count == 0)
+            if (ViewBag.tweet.Count == 0)
             {
                 <br /><div class="w3-panel w3-pale-yellow w3-border">
                     <h3>Warning!</h3>
-                    <p>No user found with this id OR The user don't have any twits yet!!! Please Try Again.</p>
+                    <p>No user found with this id OR The user don't have any tweets yet!!! Please Try Again.</p>
                     <br />
                 </div>
             }
@@ -59,21 +59,21 @@
                 <br />
                 <table>
                     <tr style="background-color: gainsboro;">
-                        <th>Twit id</th>
-                        <th>Twit Text</th>
-                        <th>Twit Sentiement</th>
+                        <th>Tweet id</th>
+                        <th>Tweet Text</th>
+                        <th>Tweet Sentiement</th>
                         <th>Date of deploy</th>
                         <th>Case ID</th>
                     </tr>
 
-                    @{ foreach (Twits twit in ViewBag.twit)
+                    @{ foreach (Tweets tweet in ViewBag.tweet)
                         {
                                         <tr>
-                                            <th>@twit.twit_id</th>
-                                            <th>@twit.text</th>
-                                            <th>@twit.sentiment</th>
-                                            <th>@twit.date</th>
-                                            <th>@twit.case_id</th>
+                                            <th>@tweet.tweet_id</th>
+                                            <th>@tweet.text</th>
+                                            <th>@tweet.sentiment</th>
+                                            <th>@tweet.date</th>
+                                            <th>@tweet.case_id</th>
                                         </tr>
                                 }
                                 }

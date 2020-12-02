@@ -1,6 +1,6 @@
 ﻿@using TwitterSentimentService;
 @{
-    ViewBag.Title = "Add Twit's Sentiment";
+    ViewBag.Title = "Add Tweet's Sentiment";
 
 }
 
@@ -40,15 +40,15 @@
         Note: Make Sure to Submit the Right Information.
     </p>
     <hr style=" display: block; width: 50%; margin:auto; border-top: 1px solid gray;">
-    <h2 style="text-align:center;color:firebrick"> All Twits without Sentiment </h2>
+    <h2 style="text-align:center;color:firebrick"> All Tweets without Sentiment </h2>
     <hr style=" display: block; width: 50%; margin:auto; border-top: 1px solid gray;">
 
     @{
 
-        if (ViewBag.twit.Count == 0)
+        if (ViewBag.tweet.Count == 0)
         {
             <br /><div class="w3-panel w3-pale-red w3-border">
-                <h3 style="text-align:center">There are no other Twits without a Sentiment.</h3>
+                <h3 style="text-align:center">There are no other Tweets without a Sentiment.</h3>
                 <br />
             </div>
         }
@@ -58,25 +58,25 @@
             <br />
             <table>
                 <tr style="background-color: gainsboro;">
-                    <th>Twit id</th>
-                    <th>Twit Text</th>
+                    <th>Tweet id</th>
+                    <th>Tweet Text</th>
                     <th>Date of deploy</th>
                     <th>Case ID</th>
                     <th>Add Sentiment</th>
                 </tr>
 
-                @foreach (Twits twit in ViewBag.twit)
+                @foreach (Tweets tweet in ViewBag.tweet)
                     {
                         <tr>
-                            <th>@twit.twit_id</th>
-                            <th>@twit.text</th>
-                            <th>@twit.date</th>
-                            <th>@twit.case_id</th>
+                            <th>@tweet.tweet_id</th>
+                            <th>@tweet.text</th>
+                            <th>@tweet.date</th>
+                            <th>@tweet.case_id</th>
                             <th>
-                                <form name="retrieve" action="AddSentimentforTwit" id="add" method="post" onsubmit="return confirmsubmit()">
+                                <form name="retrieve" action="AddSentimentforTweet" id="add" method="post" onsubmit="return confirmsubmit()">
                                     <input type="number" min="1" max="100" name="sentiment" style="width:70px;height:25px" />
-                                    <input type="hidden" name="twit_id" value="@twit.twit_id" />
-                                    <input type="hidden" name="case_id" value="@twit.case_id" />
+                                    <input type="hidden" name="tweet_id" value="@tweet.tweet_id" />
+                                    <input type="hidden" name="case_id" value="@tweet.case_id" />
                                     %
                                     <button class="btn" type="submit" style="border-radius:10px;background-color:deepskyblue" placeholder="Add Sentiment" required="">
                                         ADD
@@ -107,7 +107,7 @@
                 if (result.isConfirmed) {
                     Swal.fire(
                         'Added',
-                        'your Twit Sentiment added successfully',
+                        'your Tweet Sentiment added successfully',
                         'success'
                     );
                     setTimeout(function () { document.getElementById("add").submit() }, 3000);
